@@ -3,6 +3,12 @@ const express = require('express')
 const dotenv = require('dotenv')
 const colors = require('colors')
 const cookieParser = require('cookie-parser')
+const helmet = require('helmet')
+const xss = require('xss-clean')
+const rateLimit = require('express-rate-limit')
+const hpp = require('hpp')
+const cors = require('cors')
+const mongoSanitize = require('express-mongo-sanitize')
 const bootcamps = require('./routes/bootcamps')
 const courses = require('./routes/courses')
 const auth = require('./routes/auth')
@@ -29,6 +35,28 @@ if (process.env.NODE_ENV == 'development') {
     app.use(morgan('dev'))
 }
 app.use(fileupload())
+
+// sanitize data
+app.use(mongoSanitize())
+
+// Set security header
+app.use(helmet())
+
+// Prevent xss attack
+app.use(xss())
+
+// Rate limiter
+const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 mins
+    max: 100
+})
+app.use(limiter)
+
+// Prevent hpp param pollution
+app.use(hpp())
+
+// Enable cors
+app.use(cors())
 
 // set static folder
 app.use(express.static(path.join(__dirname, 'public')))

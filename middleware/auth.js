@@ -21,7 +21,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
     if (!token) {
         return next(
-            new ErrorResponse('Not authorize to access this routes'), 401
+            new ErrorResponse('Not authorized to access this routes'), 401
         )
     }
 
@@ -32,7 +32,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
         next()
     } catch (err) {
         return next(
-            new ErrorResponse('Not authorize to access this routes'), 401
+            new ErrorResponse('Not authorized to access this routes'), 401
         )
     }
 })
