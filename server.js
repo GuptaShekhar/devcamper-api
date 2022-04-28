@@ -21,7 +21,7 @@ const errorHandler = require('./middleware/error')
 
 const connectDB = require('./config/db')
 // Load env var
-dotenv.config({ path: __dirname + '/config/coinfig.env' })
+dotenv.config({ path: __dirname + '/config/config.env' })
 
 connectDB()
 const app = express()
